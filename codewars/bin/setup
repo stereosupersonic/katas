@@ -1,0 +1,47 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+
+require 'pathname'
+ENV['BUNDLE_GEMFILE'] ||= File.expand_path("../../Gemfile", Pathname.new(__FILE__).realpath)
+require 'rubygems'
+require 'bundler/setup'
+require 'active_support/all'
+
+kata = ARGV[0]
+def lib_file_template(klass)
+  <<-END
+class #{klass}
+  def self.my_method(n)
+    #your code here
+  end
+end
+
+END
+end
+
+def spec_file_template(klass, name)
+  <<-END
+require_relative '../lib/#{name}'
+
+describe #{klass} do
+
+  it 'should do something' do
+    expect(#{klass}.my_method(1)).to eq 'blah'
+  end
+
+end
+
+END
+end
+
+puts "create new kata for '#{kata}' '"
+name = kata.gsub(/\W+/, '_').underscore
+
+lib_file =  File.expand_path(File.dirname(__FILE__) + "/../lib/#{name}.rb")
+spec_file = File.expand_path(File.dirname(__FILE__) + "/../spec/#{name}_spec.rb")
+
+File.open(lib_file, 'w')  { |f| f << lib_file_template(name.classify)        }
+File.open(spec_file, 'w') { |f| f << spec_file_template(name.classify, name) }
+
+puts "create lib file : #{lib_file}"
+puts "create spec file: #{spec_file}"
