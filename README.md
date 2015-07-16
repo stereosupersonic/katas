@@ -1,0 +1,2 @@
+# katas
+ruby katas
