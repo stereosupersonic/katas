@@ -1,12 +1,11 @@
-require "pry"
+require 'pry'
 
 class Calculator
-
   def evaluate(string)
     binding.pry
     operator_stack = []
     number_stack = []
-    string.split(" ").each do |token|
+    string.split(' ').each do |token|
       if /\d/.match(token)
         number_stack << token.to_i
       elsif operator_stack.length > 0 && /[*]|[\/]/.match(operator_stack[-1])
